@@ -7,7 +7,14 @@
     <title>Document</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css' />
 </head>
+<?php
+    $id=1;
+    if(isset($_GET['id']))$id = $_GET['id'];
+    $conn = new PDO('mysql:host=localhost;dbname=QLCHUYENBAY','root','');
 
+    $sql = 'SELECT * FROM passengers,flights WHERE flight_id = flights.id AND flights.id='.$id;
+    $result = $conn->query($sql);
+?>
 <body>
     <div class="bg-primary">
         <div class="container">
@@ -20,10 +27,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item active">
-                                <a class="nav-link" href="./index.php">Sản phẩm</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./cart.php">Giỏ hàng</a>
+                                <a class="nav-link" href="./index.php">Trang chủ</a>
                             </li>
                         </ul>
                     </div>
@@ -36,35 +40,24 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        Danh mục sản phẩm
+                        Chuyến bay số <?php $row = $result->fetch(PDO::FETCH_ASSOC); echo $row['id'].' từ '.$row['origin'].' đến '.$row['destination'];?>
                     </div>
                     <div class="card-body">
-                        <table class="table text-center table-bordered">
+                        <table class="table text-center table-bordered  table-hover">
                             <thead class="">
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Images</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Code</th>
-                                    <th scope="col">Available</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">5 Start Rating</th>
+                                    <th scope="col">Passenger</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                include_once('./data.php');
-                                foreach ($products as $product) {
+
+                                foreach ($result as $flight) {
                                     echo '
-                                <tr>
-                                    <td>' . $product["productId"] . '</td>
-                                    <td><img src="./images/' . $product["imageUrl"] . '" alt="" style="max-height: 3rem; max-width: 6rem;"></td>
-                                    <td><a href="./product.php?id=' . $product["productId"] . '">' . $product["productName"] . '</a></td>
-                                    <td>' . $product["productCode"] . '</td>
-                                    <td>' . $product["releaseDate"] . '</td>
-                                    <td>' . $product["price"] . '</td>
-                                    <td>' . $product["starRating"] . '</td>
-                                </tr>';
+                                    <tr>
+                                        <td>' . $flight["name"] . '</td>
+                                    </tr>
+                                ';
                                 }
                                 ?>
                             </tbody>
