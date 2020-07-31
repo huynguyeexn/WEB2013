@@ -6,6 +6,7 @@
 <body style="background-color: #ffffff">
 <?php
 	session_start();
+	$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
 	if(isset($_SESSION['user'])){
 		header('location: taikhoan.php');
 	}else if(isset($_POST['login'])){
@@ -41,7 +42,7 @@
 	}
 ?>
 	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
+	<?php include_once 'layout/layout-header.php' ?>
 	<!-- END HEADER -->
 
 	<!------------------------------------------>

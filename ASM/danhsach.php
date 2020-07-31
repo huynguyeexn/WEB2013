@@ -5,7 +5,7 @@
 </head>
 <body style="background-color: #ffffff">
 	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
+	<?php include_once 'layout/layout-header.php' ?>
 	<!-- END HEADER -->
 
 	<!------------------------------------------>

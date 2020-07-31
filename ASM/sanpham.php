@@ -11,6 +11,7 @@ if (!isset($_GET['id'])) {
 	header('Location: index.php');
 	exit();
 }
+
 $conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
 
 $id = $_GET['id'];
@@ -26,7 +27,7 @@ $row = $conn->query($sql)->fetch();
 
 <body style="background-color: #ffffff">
 	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
+	<?php include_once 'layout/layout-header.php' ?>
 	<!-- END HEADER -->
 
 	<!------------------------------------------>

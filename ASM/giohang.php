@@ -6,7 +6,8 @@
 <?php
 
 session_start();
-//session_destroy();
+$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+
 if (!isset($_SESSION['carts'])) {
 	$_SESSION['carts'] = [];
 }
@@ -37,7 +38,7 @@ if(isset($_GET['delete'])) {
 
 <body style="background-color: #ffffff">
 	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
+	<?php include_once 'layout/layout-header.php' ?>
 	<!-- END HEADER -->
 
 	<!------------------------------------------>

@@ -7,10 +7,11 @@
 
 <?php
 	session_start();
+	$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+
 	if(isset($_SESSION['user'])){
 		header('location: taikhoan.php');
 	}else if(isset($_POST['submit'])){
-		$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
 		$sql = "select * from user where user_email='".$_POST['email']."'";
 		$checkEmail = $conn->query($sql)->fetch();
 		$sql = "select * from user where user_phone='".$_POST['phone']."'";
@@ -55,7 +56,7 @@
 	}
 ?>
 	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
+	<?php include_once 'layout/layout-header.php' ?>
 	<!-- END HEADER -->
 
 	<!------------------------------------------>

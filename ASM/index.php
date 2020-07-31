@@ -6,18 +6,19 @@
 </head>
 
 <body>
-	<!-- HEADER -->
-	<?php include_once 'layout/layout.header' ?>
-	<!-- END HEADER -->
-
-	<!------------------------------------------>
 	<?php
+	session_start();
 	$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
 
 	$sql = 'SELECT * FROM PRODUCTS LIMIT 10';
 
 	$products = $conn->query($sql);
 	?>
+	<!-- HEADER -->
+	<?php include_once 'layout/layout-header.php' ?>
+	<!-- END HEADER -->
+
+	<!------------------------------------------>
 	<!-- SLIDE -->
 	<section class="hn-section-1">
 		<div class="container">

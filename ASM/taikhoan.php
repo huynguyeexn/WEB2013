@@ -15,7 +15,7 @@
     if ($_SESSION['user']) {
         $id = $_SESSION['user']['id'];
         $conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
-
+        
         $sql = "select * from user where user_id='".$id."'";
 
         $result = $conn->query($sql)->fetch();
@@ -24,7 +24,7 @@
     }
     ?>
     <!-- HEADER -->
-    <?php include_once 'layout/layout.header' ?>
+    <?php include_once 'layout/layout-header.php' ?>
     <!-- END HEADER -->
 
     <!------------------------------------------>
@@ -38,8 +38,8 @@
                             <span class="h5">Xin chào <u><?php echo $result['user_fullname'] ?></u>!</span>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <!-- <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
                             <a href="taikhoan.php?logout" class="btn btn-primary">Đăng xuất</a>
                         </div>
                     </div>
