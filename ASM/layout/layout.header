@@ -56,7 +56,7 @@
 							</div>
 							<div class="cart-content">
 								<span>Tổng tiền tạm tính: <strong>1.800.000</strong></span>
-								<button class="btn-primary w-100 mt-2 py-2"><h6>Tiến hành thanh toán</h6></button>
+								<a href="giohang.php" class="btn btn-primary w-100 mt-2 py-2"><h6>Xem giỏ hàng</h6></a>
 							</div>
 						</div>
 					</div>

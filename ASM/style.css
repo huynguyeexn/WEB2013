@@ -517,6 +517,12 @@ img{
    	padding: 10px 5px;
    	margin-right: 5px;
 }
+.hn-product-button a{
+	color: white;
+}
+.hn-product-button a:hover{
+	color: white;
+}
 .hn-product-item .sale{
     height: 30px;
     right: 0;
@@ -535,7 +541,16 @@ img{
 	height: auto;
 	height: 160px;
 }
+.hn-product-item .item-thumb img{
+    margin: 0 auto !important;
+    display: block;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
 .hn-product-item .item-title{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	margin: 20px 0;
 }
 .hn-product-item .item-star{
@@ -1213,12 +1228,12 @@ footer a{
 
 /* On mouse-over, add a grey background color */
 .color:hover input ~ .checkmark {
-  background-color: #ccc;
+  border: 2px solid #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
 .color input:checked ~ .checkmark {
-  background-color: var(--cyan);
+  border: 2px solid var(--cyan);
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

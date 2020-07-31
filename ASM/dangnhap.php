@@ -4,6 +4,42 @@
 	<?php include_once 'layout/layout.meta' ?>
 </head>
 <body style="background-color: #ffffff">
+<?php
+	session_start();
+	if(isset($_SESSION['user'])){
+		header('location: taikhoan.php');
+	}else if(isset($_POST['login'])){
+		$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+
+		$sql = "select * from user where user_email='".$_POST['email']."' and user_password='".$_POST['password']."'";
+
+		$result = $conn->query($sql)->fetch();
+
+		if($result){
+			if (session_status() == PHP_SESSION_NONE) {
+			}
+			unset($_SESSION['user']);
+			$_SESSION['user'] = ['id' => $result['user_id']];
+			echo '<script>
+					swal({
+						title: "Thành công!",
+						text: "Đăng nhập thành công!",
+						icon: "success",
+						button: "ok",
+					}).then((value) => {window.location.href = "taikhoan.php";});
+				</script>';
+		}else{
+			echo '<script>
+					swal({
+						title: "Lỗi!",
+						text: "Hãy kiểm tra lại tài khoản hoặc mật khẩu!",
+						icon: "error",
+						button: "ok",
+					});
+				</script>';
+		}
+	}
+?>
 	<!-- HEADER -->
 	<?php include_once 'layout/layout.header' ?>
 	<!-- END HEADER -->
@@ -30,23 +66,23 @@
 			</div>
 			<div class="row">
 				<div class="col-12 col-lg-6">
-					<form action="">
+					<form action="" method="POST">
 						<span>Nếu bạn đã có tài khoản, đăng nhập tại đây</span>
 						<div class="form-group">
-							<label for="username"><strong>Tên đăng nhập:</strong></label>
-							<input type="text" placeholder="Tên đăng nhập" class="form-control" id="username">
+							<label for="username"><strong>Email đăng nhập:</strong></label>
+							<input type="text" placeholder="Email đăng nhập" class="form-control" name="email" required>
 						</div>
 						<div class="form-group">
 							<label for="password"><strong>Mật khẩu:</strong></label>
-							<input type="password" placeholder="Tên đăng nhập" class="form-control" id="password">
+							<input type="password" placeholder="Mật khẩu" class="form-control" name="password" required>
 						</div>
 						<div class="form-group" style="margin-bottom: 20px;">
-							<button class="btn-primary px-4 py-2 mt-3 mr-2">Đăng nhập</button>
+							<button type="submit" name="login" class="btn-primary px-4 py-2 mt-3 mr-2">Đăng nhập</button>
 							<a href="dangky.php">Đăng ký</a>
 						</div>
 					</form>
 				</div>
-				<div class="col-12 col-lg-6">
+				<!-- <div class="col-12 col-lg-6">
 					<form action="">
 						<div class="form-group">
 							<span>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email.</span>
@@ -57,7 +93,7 @@
 							<button class="btn-primary px-4 py-2" style="margin-top: 30px;">Lấy lại mật khẩu</button>
 						</div>
 					</form>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</section>

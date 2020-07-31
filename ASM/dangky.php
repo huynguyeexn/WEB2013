@@ -4,6 +4,56 @@
 	<?php include_once 'layout/layout.meta' ?>
 </head>
 <body style="background-color: #ffffff">
+
+<?php
+	session_start();
+	if(isset($_SESSION['user'])){
+		header('location: taikhoan.php');
+	}else if(isset($_POST['submit'])){
+		$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+		$sql = "select * from user where user_email='".$_POST['email']."'";
+		$checkEmail = $conn->query($sql)->fetch();
+		$sql = "select * from user where user_phone='".$_POST['phone']."'";
+		$checkPhone = $conn->query($sql)->fetch();
+		if($checkEmail){
+			echo '<script>swal({title: "Lỗi!",text: "Email đã được đăng ký, hãy sử dụng email khác!",icon: "error",button: "ok",});</script>';
+		}else if($checkPhone){
+			echo '<script>
+					swal({
+						title: "Lỗi!",
+						text: "Số điện thoại đã được đăng ký, hãy sử dụng số điện thoại khác!",
+						icon: "error",
+						button: "ok",
+					});
+				</script>';
+		}else{
+			$sql = "INSERT INTO USER(user_email, user_password, user_fullname, user_birthday, user_phone, user_address)
+			VALUES('".$_POST['email']."','".$_POST['password']."','".$_POST['fullname']."','".$_POST['birthday']."','".$_POST['phone']."','".$_POST['address']."');
+			";
+			$result = $conn->exec($sql);
+
+			if($result){
+				echo '<script>
+						swal({
+							title: "Thành công!",
+							text: "Bạn đã đăng ký thành công, hãy đăng nhập!",
+							icon: "success",
+							button: "ok",
+						}).then((value) => {window.location.href = "dangnhap.php";});
+					</script>';
+			}else{
+				echo '<script>
+						swal({
+							title: "Lỗi!",
+							text: "Đã có lỗi trong khi đăng ký!",
+							icon: "error",
+							button: "ok",
+						});
+					</script>';
+			}
+		}
+	}
+?>
 	<!-- HEADER -->
 	<?php include_once 'layout/layout.header' ?>
 	<!-- END HEADER -->
@@ -30,37 +80,51 @@
 			</div>
 			<div class="row">
 				<div class="col-12">
-					<form action="">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="ho"><strong>Họ:</strong></label>
-									<input type="text" placeholder="Họ:" class="form-control" id="ho">
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="ten"><strong>Tên:</strong></label>
-									<input type="text" placeholder="Tên:" class="form-control" id="ten">
-								</div>
-							</div>
-						</div>
+					<form action="" method="POST">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="email"><strong>Email:</strong></label>
-									<input type="text" placeholder="Email:" class="form-control" id="email">
+									<input type="text" placeholder="Email" class="form-control" name="email" required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="password"><strong>Mật khẩu:</strong></label>
-									<input type="password" placeholder="Mật khẩu:" class="form-control" id="password">
+									<input type="password" placeholder="Mật khẩu" class="form-control" name="password" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="ho"><strong>Họ và tên:</strong></label>
+									<input type="text" placeholder="Họ và tên" class="form-control" name="fullname" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="ten"><strong>Ngày sinh: </strong></label>
+									<input type="date" class="form-control" name="birthday" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="ho"><strong>Số điện thoại:</strong></label>
+									<input type="text" placeholder="Số điện thoại" class="form-control" name="phone" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="ten"><strong>Địa chỉ: </strong></label>
+									<input type="text" placeholder="Địa chỉ" class="form-control" name="address" required>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<button class="btn-primary px-4 py-2" style="margin-top: 20px;">Đăng ký</button>
+							<button type="submit" name="submit" class="btn-primary px-4 py-2" style="margin-top: 20px;">Đăng ký</button>
 						</div>
 					</form>
 				</div>

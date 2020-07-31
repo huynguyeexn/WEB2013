@@ -3,7 +3,8 @@
 						<span>DANH MỤC SẢN PHẨM</span>
 					</div>
 					<div class="side-bar-list">
-						<div class="side-bar-item ">
+						<!-- \
+							<div class="side-bar-item ">
 							<a href="">Phòng khách</a>
 							<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 							<div class="dropdown-menu">
@@ -13,31 +14,6 @@
 								<a class="dropdown-item" href="#">Separated link</a>
 							</div>
 						</div>
-						<div class="side-bar-item ">
-							<a href="">Phòng khách</a>
-							<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<a class="dropdown-item" href="#">Something else here</a>
-								<a class="dropdown-item" href="#">Separated link</a>
-							</div>
-						</div>
-						<div class="side-bar-item ">
-							<a href="">Phòng khách</a>
-						</div>
-						<div class="side-bar-item ">
-							<a href="">Phòng khách</a>
-						</div>
-						<div class="side-bar-item ">
-							<a href="">Phòng khách</a>
-							<button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<a class="dropdown-item" href="#">Something else here</a>
-								<a class="dropdown-item" href="#">Separated link</a>
-							</div>
-						</div>
+					 -->
 					</div>
 				</div>
