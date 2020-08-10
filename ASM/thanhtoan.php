@@ -38,7 +38,7 @@ if (isset($_GET['delete'])) {
 }
 
 
-$conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+$conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=utf8', 'root', '123');
 
 $sql = "select * from user where user_id='" . $_SESSION['user']['id'] . "'";
 
@@ -105,7 +105,7 @@ if (isset($_GET['confirm'])) {
                     $totalPrice = 0;
 
                     if (isset($_SESSION['carts']) && count($_SESSION['carts']) > 0) {
-                        $conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+                        $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=utf8', 'root', '123');
 
                         echo '
 							<table class="table table-bordered table-thanhtoan">

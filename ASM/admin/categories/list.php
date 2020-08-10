@@ -40,7 +40,7 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="./index.php">
+                <a class="nav-link active" href="../index.php">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                   Dashboard <span class="sr-only">(current)</span>
                 </a>
@@ -52,7 +52,7 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./products/list.php">
+                <a class="nav-link" href="../products/list.php">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                   Products
                 </a>
@@ -70,7 +70,7 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./categories/list.php">
+                <a class="nav-link" href="./list.php">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                   Categories
                 </a>
@@ -114,61 +114,34 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                <button class="btn btn-sm btn-outline-secondary">Export</button>
-              </div>
-              <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                This week
-              </button>
-            </div>
+            <h1 class="h2">Danh mục sản phẩm</h1>
           </div>
-          <h2>Đơn hàng gần đây</h2>
+          <h2>Danh sách các danh mục sản phẩm</h2>
+          
+          <a href="./create.php" class="btn btn-primary my-2">Thêm danh mục sản phẩm</a>
           <div class="table-responsive">
             <table class="table table-hover table-bordered text-center">
               <thead class="thead-dark">
                 <tr>
-                  <th>Mã đơn</th>
-                  <th>Khách hàng</th>
-                  <th>Địa chỉ</th>
-                  <th>SĐT</th>
-                  <th>Ngày đặt</th>
-                  <th>Tổng tiền</th>
-                  <th>Trạng thái</th>
+                  <th>Mã danh mục</th>
+                  <th>Tên danh mục</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                    $sql = "SELECT orders.*, user.user_fullname, user.user_address, user.user_phone, SUM(products.product_price) AS total_price  FROM (((orders
-                    inner join user on orders.user_id = user.user_id)
-                    inner join order_items on orders.order_id = order_items.order_id)
-                    INNER JOIN products ON products.product_id = order_items.product_id)
-                    GROUP BY orders.order_id;
-                    ";
-                    $orders = $conn->query($sql);
+                    $sql = "SELECT * from categories";
+                    $categories = $conn->query($sql);
 
-                    foreach($orders as $order){
-                        $status = '';
-
-                        switch($order["order_status"]){
-                            case -1: $status= '<p class="text-danger">Đã huỷ</p>'; break;
-                            case 0: $status= '<p class="text-primary">Đang xử lý</p>'; break;
-                            case 1: $status= '<p class="text-success">Đã thanh toán</p>'; break;
-                        }
+                    foreach($categories as $category){
                         echo '
                         <tr>
-                            <td>'.$order["order_id"].'</td>
-                            <td>'.$order["user_fullname"].'</td>
-                            <td>'.$order["user_address"].'</td>
-                            <td>'.$order["user_phone"].'</td>
-                            <td>'.date_format(date_create($order["order_time"]), 'd-m-Y H:i:s').'</td>
-                            <td>'.number_format($order["total_price"]).'</td>
-                            <td>'.$status .'</td>
-                            <td><a href="./oders/detail.php?id='.$order["order_id"].'">Chi tiết</a></td>
+                            <td>'.$category["category_id"].'</td>
+                            <td>'.$category["category_name"].'</td>
+                            <td>
+                                <a href="./update.php?id='.$category["category_id"].'" class="btn btn-primary">Sửa</a>
+                                <a href="./delete.php?id='.$category["category_id"].'" class="btn btn-danger">Xoá</a>
+                            </td>
                         </tr>
                         ';
                     }
@@ -176,6 +149,8 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
               </tbody>
             </table>
           </div>
+          
+          <a href="./create.php" class="btn btn-primary my-2">Thêm danh mục sản phẩm</a>
         </main>
       </div>
     </div>

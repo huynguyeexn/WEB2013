@@ -14,7 +14,7 @@
     }
     if ($_SESSION['user']) {
         $id = $_SESSION['user']['id'];
-        $conn = new PDO('mysql:host=localhost;dbname=WEB2013_ASM;charset=utf8', 'root', '');
+        $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=utf8', 'root', '123');
         
         $sql = "select * from user where user_id='".$id."'";
 

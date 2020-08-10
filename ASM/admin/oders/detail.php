@@ -4,6 +4,10 @@
 //     header('location: ../index.php');
 // }
 $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=utf8', 'root', '123');
+if(!isset($_GET['id'])){
+    header('location: ../index.php');
+}
+$id = $_GET['id'];
 
 // $sql = "select * from user where user_id='".$_SESSION['user']['id']."'";
 
@@ -25,6 +29,15 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
 </head>
 
 <body>
+    <?php
+    
+    if(isset($_GET['update'])){
+        $sql = 'update orders set order_status = '.$_GET['update'].' where order_id='.$id;
+        $result = $conn->exec($sql);
+        $link = 'location: ./detail.php?id='.$id;
+        header($link);
+    }
+    ?>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">WEB2013</a>
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
@@ -40,7 +53,7 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="./index.php">
+                <a class="nav-link active" href="../index.php">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                   Dashboard <span class="sr-only">(current)</span>
                 </a>
@@ -52,7 +65,7 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./products/list.php">
+                <a class="nav-link" href="../products/list.php">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                   Products
                 </a>
@@ -126,49 +139,63 @@ $conn = new PDO('mysql:host=localhost;dbname=WEB2013_asm;charset=utf8;charset=ut
               </button>
             </div>
           </div>
-          <h2>Đơn hàng gần đây</h2>
-          <div class="table-responsive">
+          <h2>Thông tin đơn hàng</h2>
+            <?php
+                
+                $sql = "SELECT orders.*, user.user_fullname, user.user_address, user.user_email, user.user_phone, SUM(products.product_price) AS total_price  FROM (((orders
+                inner join user on orders.user_id = user.user_id)
+                inner join order_items on orders.order_id = order_items.order_id)
+                INNER JOIN products ON products.product_id = order_items.product_id)
+                WHERE orders.order_id=".$id." GROUP BY orders.order_id;";
+                $info = $conn->query($sql)->fetch();
+                $status = '';
+
+                switch($info["order_status"]){
+                    case -1: $status= '<span class="text-danger">Đã huỷ</span>'; break;
+                    case 0: $status= '<span class="text-primary">Đang xử lý</span>'; break;
+                    case 1: $status= '<span class="text-success">Đã thanh toán</span>'; break;
+                }
+            ?>
+            <p>Mã đơn hàng: <strong><?php echo $info['order_id']?></strong></p>
+            <p>Khách hàng: <strong><?php echo $info['user_fullname']?></strong></p>
+            <p>Số điện thoại: <strong><?php echo $info['user_phone']?></strong></p>
+            <p>Email: <strong><?php echo $info['user_email']?></strong></p>
+            <p>Địa chỉ: <strong><?php echo $info['user_address']?></strong></p>
+            <p>Ngày đặt hàng: <strong><?php echo $info['order_time']?></strong></p>
+            <p>Trạng thái: <strong><?php echo $status  ?></strong></p>
+            <p>Thay đổi trạng thái: <a href="?id=<?php echo $info['order_id']?>&update=-1"  class="text-danger">Đã huỷ</a>, <a href="?id=<?php echo $info['order_id']?>&update=0"  class="text-primary">Đang xử lý</a>, <a href="?id=<?php echo $info['order_id']?>&update=1"   class="text-success">Đã thanh toán</a></p>
+            <div class="table-responsive">
             <table class="table table-hover table-bordered text-center">
               <thead class="thead-dark">
                 <tr>
-                  <th>Mã đơn</th>
-                  <th>Khách hàng</th>
-                  <th>Địa chỉ</th>
-                  <th>SĐT</th>
-                  <th>Ngày đặt</th>
-                  <th>Tổng tiền</th>
-                  <th>Trạng thái</th>
-                  <th></th>
+                  <th>#</th>
+                  <th>Tên</th>
+                  <th>Giá</th>
+                  <th>Giá khuyến mãi</th>
+                  <th>Hình ảnh</th>
+                  <th>Danh mục</th>
+                  <th>Nhãn hiệu</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                    $sql = "SELECT orders.*, user.user_fullname, user.user_address, user.user_phone, SUM(products.product_price) AS total_price  FROM (((orders
-                    inner join user on orders.user_id = user.user_id)
-                    inner join order_items on orders.order_id = order_items.order_id)
-                    INNER JOIN products ON products.product_id = order_items.product_id)
-                    GROUP BY orders.order_id;
-                    ";
-                    $orders = $conn->query($sql);
+                    $sql = "SELECT * FROM ((order_items
+                    INNER JOIN products ON products.product_id = order_items.product_id
+                    inner JOIN  categories ON products.category_id = categories.category_id)
+                    inner JOIN  brands ON products.brand_id = brands.brand_id)
+                    WHERE order_items.order_id = ".$id."  order by products.product_id";
+                    $products = $conn->query($sql);
 
-                    foreach($orders as $order){
-                        $status = '';
-
-                        switch($order["order_status"]){
-                            case -1: $status= '<p class="text-danger">Đã huỷ</p>'; break;
-                            case 0: $status= '<p class="text-primary">Đang xử lý</p>'; break;
-                            case 1: $status= '<p class="text-success">Đã thanh toán</p>'; break;
-                        }
+                    foreach($products as $product){
                         echo '
                         <tr>
-                            <td>'.$order["order_id"].'</td>
-                            <td>'.$order["user_fullname"].'</td>
-                            <td>'.$order["user_address"].'</td>
-                            <td>'.$order["user_phone"].'</td>
-                            <td>'.date_format(date_create($order["order_time"]), 'd-m-Y H:i:s').'</td>
-                            <td>'.number_format($order["total_price"]).'</td>
-                            <td>'.$status .'</td>
-                            <td><a href="./oders/detail.php?id='.$order["order_id"].'">Chi tiết</a></td>
+                            <td>'.$product["product_id"].'</td>
+                            <td>'.$product["product_name"].'</td>
+                            <td>'.$product["product_price"].'</td>
+                            <td>'.$product["product_sale"].'</td>
+                            <td><img style="max-height: 3rem;" src="../../images/product-images/'.$product["product_images"].'"></td>
+                            <td>'.$product["category_name"].'</td>
+                            <td>'.$product["brand_name"].'</td>
                         </tr>
                         ';
                     }

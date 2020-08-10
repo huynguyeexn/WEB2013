@@ -5,7 +5,7 @@
             $username = "root";
             $password = "";
             try{
-                $conn = new PDO("mysql:host=$servername;dbname=WEB2013_ASM",$username,$password);
+                $conn = new PDO("mysql:host=$servername;dbname=WEB2013_asm;charset=utf8",$username,$password);
                 
                 $sql = 'SELECT * FROM PRODUCTS';
 
